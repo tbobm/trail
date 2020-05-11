@@ -34,3 +34,10 @@ The Exchange is automatically created by Logstash at startup time, based on the
 - Create a Queue (_NOTE: define if queue have to be exclusive and/or durable_)
 - Bind your Queue to the Exchange, specify if needed a *routing key*
 - Consume the messages from your Queue
+
+
+## Logs
+
+### Schema
+
+See the [log schema](./log-schema.md).
