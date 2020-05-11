@@ -19,7 +19,12 @@ export class AMQPConsumerService {
   }
 
   private async initConnection() {
-    this.connection = await connect(this.brokerUrl);
+    try {
+      this.connection = await connect(this.brokerUrl);
+    } catch (err) {
+      console.error(err);
+      process.exit(1);
+    }
     this.channel = await this.connection.createChannel();
     await this.channel.assertQueue(this.queueName, { exclusive: true });
     await this.channel.assertExchange(this.exchangeName, 'topic');
