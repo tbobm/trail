@@ -14,11 +14,10 @@ export class AppComponent {
   logs$ = this._logs$.asObservable();
 
   constructor() {
-    this.websocket.asObservable().subscribe((a) => {
-      const log = JSON.parse(
-        this.decoder.decode(new Uint8Array(a.content.data))
+    this.websocket.asObservable().subscribe((log) => {
+      this._logs$.next(
+        [JSON.parse(log), ...this._logs$.getValue()].slice(0, 100)
       );
-      this._logs$.next([log, ...this._logs$.getValue()].slice(0, 100));
     });
   }
 }
