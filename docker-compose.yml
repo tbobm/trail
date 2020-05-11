@@ -34,3 +34,8 @@ services:
   log-generator:
     image: "mingrammer/flog"
     command: "-d 1 -l"
+  api:
+    build: api
+    ports:
+      - "3000:3000"
+    restart: "always"
