@@ -1,0 +1,133 @@
+<html>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://dl.etna-alternance.net/sujets/prism.css">
+	<link rel="stylesheet" href="https://dl.etna-alternance.net/sujets/sujet.css">
+	<script type="text/javascript" src="https://dl.etna-alternance.net/sujets/prism.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>SDC-168H / ENIX </title>
+</head>
+<body>
+	<div id="header" class="panel panel-heading">
+		<div id="logo">
+			<img src="https://dl.etna-alternance.net/sujets/logo.png">
+		</div>
+		<div id="title">SDC-168H / ENIX</div>
+	</div>
+	<div class="panel panel-module">
+		<div class="panel-heading">Modalités</div>
+		<div class="panel-body">
+			<table>
+				<thead></thead>
+				<tbody>
+					<tr>
+						<th>Dépôt</th>
+						<td>$$RENDU$$</td>
+					</tr>
+					<tr>
+						<th>Correction</th>
+						<td>Soutenance</td>
+					</tr>
+					<tr>
+						<th>Durée</th>
+						<td>7 jours</td>
+					</tr>
+					<tr>
+						<th>Spécialisations métiers #1</th>
+						<td>Infrastructures du Cloud</td>
+					</tr>
+					<tr>
+						<th>Spécialisations métiers #2</th>
+						<td>Cloud computing et microservices</td>
+					</tr>
+					<tr>
+						<th>Spécialisations métiers #3</th>
+						<td>Développement d'application web, mobile et UX</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="panel panel-objective">
+		<div class="panel-heading">Objectifs pédagogiques</div>
+		<div class="panel-body">
+			<table>
+				<thead>
+					<tr>
+						<th></th>
+						<th>Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Spécialisation Métier</td>
+						<td>Acquérir des compétences techniques liées à votre spécialisation métier.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="panel panel-info">
+		<div class="panel-heading">Porteur de projet</div>
+		<div class="panel-body">
+			<p>L'entreprise qui propose ce défi est <a href="http://www.enix.io/" target="_blank">Enix</a>.</p>
+			<h3><b>Pitch de Enix :</b></h3>
+			<p>Notre solution permet le multiplexage et l'affichage de logs sur une interface web moderne.</p>
+			<hr>
+			<p>Le référent technique qui vous suivra sur ce code camp est Arthur CROS.</p>
+		</div>
+	</div>
+	<div class="panel panel-project">
+		<div class="panel-heading">Consignes</div>
+		<div class="panel-body">
+			<h3><b>Contexte :</b></h3>
+			<p>Lorsqu'on lance une app sur plusieurs machines distinctes (via Kubernetes ou non), on a rapidement envie d'avoir des logs consolidés.<br>Sans faire appel à des services en Saas, ElasticSearch/Kibana et Graylog qui sont les solutions habituelles, les machines sont malheureusement très lourdes en termes de mise en place et en ressources.</p>
+			<p>L'idéal serait d'avoir l'équivalent de la commande shell <code>tail</code> sur l'ensemble des logs, sans chercher à faire de l'indexation de log.</p>
+			<p>C'est ce que l'on propose de construire dans ce projet (un peu à l'image de <a href="http://www.papertrail.com" target="_blank">papertrail.com</a>) : pas de persistence, léger et sans configuration, avec une vue instantanée des nouveaux logs et avec en option la possibilité de filtrer par host ou par conteneur.</p>
+			<p>L'idée est de récupérer les logs par les outils habituels : fluentd, filebeat, ou fluentbeat.<br>De les centraliser (avec logstash), en option sans.<br>Et de profiter des websockets pour afficher dans un webui moderne les logs en live.</p>
+			<hr>
+			<h3><b>Votre défi :</b></h3>
+			<p>Implémenter une solution plus simple et plus élégante que la plupart des outils utilisés par l'industrie aujourd'hui.</p>
+			<h3><b>Le livrable :</b></h3>
+			<p>Un repo git, un conteneur et une documentation permettant d'utiliser le projet en moins de 5 minutes.</p>
+			<hr>
+			<h3><b>Spécifications technico-fonctionnelles</b></h3>
+			<p>Technologies préconisées :</p>
+			<ul>
+				<li>conteneurs</li>
+				<li>websocket</li>
+				<li>js</li>
+				<li>compatibilité kubernetes</li>
+			</ul>
+		</div>
+	</div>
+	<div class="panel panel-info">
+		<div class="panel-heading">Certains se poseront peut-être ces questions :</div>
+		<div class="panel-body">
+			<p><b>Est-il obligatoire d'utiliser les technologies proposées (fluentd, filebeat, fluentbeat, logstash) ou sommes-nous libre d'utiliser les technologies que nous voulons ?<br>Quel genre de container devons-nous rendre ?<br>Un container simple avec logstash (sans web app containerisée par exemple ...) ?</b></p>
+			<p>Le but est de vous laisser un maximum de liberté tant que le résultat est là, mais pour compléter :</p>
+			<ul>
+				<li>
+					<p>le but principal est d'avoir une interface web qui permet de consommer les logs venant de multiples hosts ou conteneurs ou autre à l'image de ce que fait <a href="https://www.papertrail.com/" target="_blank">https://www.papertrail.com/</a></p>
+				</li>
+				<li>
+					<p>le but n'est pas d'être iso fonctionnalités (cela est pour l'ui)</p>
+				</li>
+				<li>
+					<p>Concernant les internals : websocket ou équivalent est un must afin d'avoir un minimum de latence entre l'arrivée des logs et leur affichage</p>
+				</li>
+				<li>
+					<p>Concernant la source des logs, dans la majorité des cas de production actuels, vous trouverez l'un des trois outils présents dans le sujet.<br>Dans la mesure où Enix veut pouvoir installer le projet le plus facilement possible, il est déconseillé d'implémenter un truc similaire à ce qui existe déjà. Par contre, si vous trouvez un outil équivalent à ceux listés, vous pouvez le proposer à Arthur CROS.</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="panel panel-bonus">
+		<div class="panel-heading">Bonus</div>
+		<div class="panel-body">
+			<p>Optimiser la consommation mémoire du projet lors du traitement de flux lourds.</p>
+		</div>
+	</div>
+</body>
+</html>
