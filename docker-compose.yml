@@ -5,35 +5,32 @@ volumes:
   data:
 
 services:
+  broker:
+    image: "rabbitmq:3.7-management"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    env_file: secrets.env
+    # TODO: Persist data
+    # TODO: cluster
+  filebeat:
+    image: "docker.elastic.co/beats/filebeat:7.6.2"
+    user: root
+    restart: "always"
+    volumes:
+      - "./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/var/lib/docker/containers:/var/lib/docker/containers:ro"
+    command: "-e -strict.perms=false"
   logstash:
     image: "docker.elastic.co/logstash/logstash:7.2.0"
+    env_file: secrets.env
     restart: "always"
-    ports:
-      - "5001:5001/udp"
     volumes:
       - ./pipelines.yml:/usr/share/logstash/config/pipelines.yml
       - ./pipeline-logs.conf:/usr/share/logstash/pipeline/pipeline-logs.conf
     environment:
-      GRAPHITE_HOST: "graphite"
-      GRAPHITE_PORT: 2023
-      ELASTICSEARCH_HOST: "http://elasticsearch:9200"
-  elasticsearch:
-    image: "docker.elastic.co/elasticsearch/elasticsearch:7.6.2"
-    restart: "always"
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    environment:
-      discovery.type: single-node
-  kibana:
-    image: "docker.elastic.co/kibana/kibana:7.6.2"
-    restart: "always"
-    ports:
-      - "8601:5601"
-    environment:
-      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      RABBITMQ_HOST: broker
   log-generator:
     image: "mingrammer/flog"
     command: "-d 1 -l"
-    volumes:
-      - data:/dev/stdout
