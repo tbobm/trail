@@ -28,6 +28,7 @@ services:
     restart: "always"
     volumes:
       - ./pipelines.yml:/usr/share/logstash/config/pipelines.yml
+      - ./logstash.yml:/usr/share/logstash/config/logstash.yml
       - ./pipeline-logs.conf:/usr/share/logstash/pipeline/pipeline-logs.conf
     environment:
       RABBITMQ_HOST: broker
