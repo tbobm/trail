@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
+import { bufferTime, map, startWith } from "rxjs/operators";
 import { webSocket, WebSocketSubject } from "rxjs/webSocket";
 
 @Component({
@@ -12,6 +13,14 @@ export class AppComponent {
   decoder = new TextDecoder("utf-8");
   private _logs$ = new BehaviorSubject<string[]>([]);
   logs$ = this._logs$.asObservable();
+  logsPerSecond$ = this.logs$.pipe(
+    bufferTime(1000),
+    map((logs) => logs.length),
+    startWith(0)
+  );
+  logo$ = this.logsPerSecond$.pipe(
+    map((count) => (count > 1 ? "panik" : "kalm"))
+  );
 
   constructor() {
     this.websocket.asObservable().subscribe((log) => {
