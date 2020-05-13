@@ -1,0 +1,13 @@
+---
+- hosts: all
+  become: true
+  become_method: sudo
+  tasks:
+    - include_role:
+        name: docker
+    - name: Add vagrant user to docker group
+      user:
+        append: true
+        groups:
+          - docker
+        name: vagrant
