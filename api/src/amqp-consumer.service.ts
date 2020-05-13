@@ -1,19 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Channel, connect, Connection, Message } from 'amqplib';
 import { Observable, Subject } from 'rxjs';
+
+@Module({
+  imports: [ConfigModule],
+})
 
 @Injectable()
 export class AMQPConsumerService {
   private brokerUrl: string;
   private connection: Connection;
   private channel: Channel;
-  private exchangeName = 'logs';
+  private exchangeName: string;
   private queueName: string;
   private _log$: Subject<any> = new Subject();
   public log$: Observable<any> = this._log$.asObservable();
 
-  constructor() {
-    this.brokerUrl = 'amqp://service:KOoiadscae18293@broker';
+  constructor(private configService: ConfigService) {
+    this.brokerUrl = this.configService.get<string>('BROKER_URL');
+    this.exchangeName = this.configService.get<string>('EXCHANGE_NAME', 'logs');
     this.queueName = `api`;
     this.initConnection();
   }
