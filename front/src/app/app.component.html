@@ -1,1 +1,16 @@
-<div class="log" *ngFor="let log of logs$ | async">{{ log.message }}</div>
+<div class="header">
+  <div class="left-side">
+    <span class="title"> Should I panik or keep kalm ?</span>
+  </div>
+  <div class="right-side">
+    <span class="count">{{ logsPerSecond$ | async }} logs/s</span>
+    <img [src]="'assets/img/' + (logo$ | async) + '.png'" alt="" />
+  </div>
+</div>
+<div class="logs">
+  <div class="log" *ngFor="let log of logs$ | async">
+    <span class="date">{{ log["@timestamp"] | date: "medium" }}</span>
+    <span class="host">{{ log.host.name }}</span>
+    <span class="message">{{ log.message }}</span>
+  </div>
+</div>
