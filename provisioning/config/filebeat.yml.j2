@@ -1,0 +1,8 @@
+---
+filebeat.inputs:
+  - type: container
+    paths:
+      - '/var/lib/docker/containers/*/*.log'
+    ignore_older: 5m
+output.logstash:
+  hosts: ["{{ LOGSTASH_TARGET }}"]
