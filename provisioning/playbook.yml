@@ -2,7 +2,11 @@
 - hosts: all
   become: true
   become_method: sudo
+  vars:
+    deploy_user: vagrant
   tasks:
+    - debug:
+        msg: "Hello {{ inventory_hostname }}"
     - include_role:
         name: docker
     - name: Add vagrant user to docker group
@@ -10,4 +14,10 @@
         append: true
         groups:
           - docker
-        name: vagrant
+        name: "{{ deploy_user }}"
+    - name: Copy project
+      copy:
+        src: "apps/{{ inventory_hostname }}/"
+        dest: "/srv"
+        owner: "{{ deploy_user }}"
+        group: "{{ deploy_user }}"
