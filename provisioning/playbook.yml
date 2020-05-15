@@ -4,6 +4,7 @@
   become_method: sudo
   vars:
     deploy_user: vagrant
+    docker_compose_version: "1.25.4"
     LOGSTASH_TARGET: "192.168.1.26:5044"
   tasks:
     - debug:
@@ -38,13 +39,16 @@
         update_cache: true
         name: python-pip
 
-    - name: Install docker-py
+    - name: Install python docker utilities (docker, docker-compose)
       pip:
-        name: docker
+        name:
+          - docker
+          - "docker-compose>=1.25.4"
 
     - name: Run elastic.filebeat docker container
       docker_container:
         name: filebeat_agent
+        restart: true
         image: "docker.elastic.co/beats/filebeat:7.6.2"
         state: "started"
         user: root
@@ -53,3 +57,7 @@
           - "/etc/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
           - "/var/run/docker.sock:/var/run/docker.sock:ro"
           - "/var/lib/docker/containers:/var/lib/docker/containers:ro"
+    - name: Run example project
+      docker_compose:
+        project_src: "/srv"
+        build: true
