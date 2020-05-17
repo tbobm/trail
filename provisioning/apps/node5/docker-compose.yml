@@ -1,0 +1,7 @@
+---
+version: '3'
+
+services:
+  log-generator:
+    image: "mingrammer/flog"
+    command: "-d 1 -l"

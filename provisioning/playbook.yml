@@ -1,0 +1,63 @@
+---
+- hosts: all
+  become: true
+  become_method: sudo
+  vars:
+    deploy_user: vagrant
+    docker_compose_version: "1.25.4"
+    LOGSTASH_TARGET: "192.168.1.26:5044"
+  tasks:
+    - debug:
+        msg: "Hello {{ inventory_hostname }}"
+    - include_role:
+        name: docker
+    - name: Add vagrant user to docker group
+      user:
+        append: true
+        groups:
+          - docker
+        name: "{{ deploy_user }}"
+    - name: Copy project
+      copy:
+        src: "apps/{{ inventory_hostname }}/"
+        dest: "/srv"
+        owner: "{{ deploy_user }}"
+        group: "{{ deploy_user }}"
+    - name: Copy elastic.filebeat configuration
+      template:
+        src: "config/filebeat.yml.j2"
+        dest: "/etc/filebeat.yml"
+        owner: "root"
+        group: "root"
+        backup: true
+
+    - debug:
+        msg: Install Python tools and dependencies
+
+    - name: Install pip
+      apt:
+        update_cache: true
+        name: python-pip
+
+    - name: Install python docker utilities (docker, docker-compose)
+      pip:
+        name:
+          - docker
+          - "docker-compose>=1.25.4"
+
+    - name: Run elastic.filebeat docker container
+      docker_container:
+        name: filebeat_agent
+        restart: true
+        image: "docker.elastic.co/beats/filebeat:7.6.2"
+        state: "started"
+        user: root
+        restart_policy: "always"
+        volumes:
+          - "/etc/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
+          - "/var/run/docker.sock:/var/run/docker.sock:ro"
+          - "/var/lib/docker/containers:/var/lib/docker/containers:ro"
+    - name: Run example project
+      docker_compose:
+        project_src: "/srv"
+        build: true

@@ -26,6 +26,9 @@ services:
     image: "docker.elastic.co/logstash/logstash:7.2.0"
     env_file: secrets.env
     restart: "always"
+    ports:
+      - "5044:5044/tcp"
+      - "9600:9600/tcp"
     volumes:
       - ./pipelines.yml:/usr/share/logstash/config/pipelines.yml
       - ./logstash.yml:/usr/share/logstash/config/logstash.yml
