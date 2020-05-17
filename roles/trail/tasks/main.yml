@@ -1,0 +1,33 @@
+---
+- name: Copy elastic.filebeat configuration
+  template:
+    src: "provisioning/config/filebeat.yml.j2"
+    dest: "/etc/filebeat.yml"
+    owner: "root"
+    group: "root"
+    backup: true
+
+- debug:
+    msg: Install Python tools and dependencies
+
+- name: Install pip
+  apt:
+    update_cache: true
+    name: python-pip
+
+- name: Install python docker utility
+  pip:
+    name: docker
+
+- name: Run elastic.filebeat docker container
+  docker_container:
+    name: filebeat_agent
+    restart: true
+    image: "docker.elastic.co/beats/filebeat:7.6.2"
+    state: "started"
+    user: root
+    restart_policy: "always"
+    volumes:
+      - "/etc/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/var/lib/docker/containers:/var/lib/docker/containers:ro"
