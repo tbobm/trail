@@ -13,6 +13,14 @@ services:
     env_file: secrets.env
     # TODO: Persist data
     # TODO: cluster
+  storage:
+    image: "mongo:4"
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: trail
+    volumes:
+      - "./mongoscripts:/docker-entrypoint-initdb.d/"
   filebeat:
     image: "docker.elastic.co/beats/filebeat:7.6.2"
     user: root
@@ -23,7 +31,7 @@ services:
       - "/var/lib/docker/containers:/var/lib/docker/containers:ro"
     command: "-e -strict.perms=false"
   logstash:
-    image: "docker.elastic.co/logstash/logstash:7.2.0"
+    build: logstash
     env_file: secrets.env
     restart: "always"
     ports:
