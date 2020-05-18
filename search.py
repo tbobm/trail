@@ -27,7 +27,6 @@ def main():
     print('@timestamp,message')
     for doc in docs:
         print(doc['@timestamp'], doc['message'], sep=',')
-        return
 
 
 if __name__ == '__main__':
