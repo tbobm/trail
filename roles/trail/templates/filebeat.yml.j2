@@ -1,1 +1,11 @@
-provisioning/config/filebeat.yml.j2
+---
+filebeat.inputs:
+  - type: container
+    paths:
+      - '/var/lib/docker/containers/*/*.log'
+    ignore_older: 5m
+processors:
+  - add_host_metadata:
+
+output.logstash:
+  hosts: ["{{ LOGSTASH_TARGET }}"]
