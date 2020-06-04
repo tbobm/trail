@@ -1,0 +1,5 @@
+---
+# Ansible Galaxy
+- src: geerlingguy.docker
+  version: 2.5.2
+  name: docker
