@@ -46,7 +46,7 @@ filebeat | log collection - fetch logs from containers, either by mapping the do
 logstash | centralize, parse and enrich logs
 rabbitmq | access point for logs through the [topic exchange](https://www.rabbitmq.com/tutorials/amqp-concepts.html#exchange-topic) called `logs`
 flog | open source log generation tool
-mongodb | short term storage
+mongodb | short term storage (6h)
 
 ### Running the backend only
 
@@ -67,6 +67,24 @@ The Exchange is automatically created by Logstash at startup time, based on the
 - Bind your Queue to the Exchange, specify if needed a *routing key*
 - Consume the messages from your Queue
 
+### Short term log retention
+
+The logstash pipeline will, in addition to forwarding the logs in RabbitMQ, store the logs in MongoDB.
+
+As seen in the [mongoscripts configuration directory](./mongoscripts/logs.js), an unoptimized index based on the `@timestamp` field will enable the deletion of each log after 6 hours.
+
+Querying these logs through the frontend was not implemented, a helper script [search.py](./search.py) was added instead as a lightweight replacement.
+
+_Note: Implementing this in the frontend should be quite quick_
+
+#### Example usage
+
+```bash
+export MONGODB_URI=mongodb://localhost:27017/trail  # This script uses the environment variable MONGODB_URI to connect to MongoDB
+python search.py term
+# ...
+# <@timestamp>, <message>
+```
 
 ## Logs
 
