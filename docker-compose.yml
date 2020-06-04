@@ -43,11 +43,13 @@ services:
       - ./pipeline-logs.conf:/usr/share/logstash/pipeline/pipeline-logs.conf
     environment:
       RABBITMQ_HOST: broker
+      MONGODB_URI: mongodb://storage:27017/trail
   log-generator:
     image: "mingrammer/flog"
     command: "-d 1 -l"
   api:
     build: api
+    env_file: .env
     ports:
       - "3000:3000"
     restart: "always"
