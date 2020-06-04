@@ -101,6 +101,11 @@ _Note: Implementing this in the frontend should be quite quick_
 #### Example usage
 
 ```bash
+# install pymongo
+pip install --user -r requirements.txt
+```
+
+```bash
 export MONGODB_URI=mongodb://localhost:27017/trail  # This script uses the environment variable MONGODB_URI to connect to MongoDB
 python search.py term
 # ...
