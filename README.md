@@ -36,6 +36,27 @@ By running `docker-compose up -d`, you will have the api on your local port `300
 
 [![](https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggTFJcbiAgc3ViZ3JhcGggYmFja2VuZFxuICAgIEMoW0NvbnRhaW5lcl0pIC0tPnxsb2cgdG8gc3Rkb3V0L3N0ZGVycnwgQltkb2NrZXIganNvbiBsb2cgZHJpdmVyXVxuICAgIEIgLS0-fG1vdW50ZWQgbG9nIGRpcmVjdG9yaWVzfCBGW0ZpbGViZWF0XSAtLT58ZmlsZWJlYXQgaW5wdXR8IExbL0xvZ3N0YXNoL11cbiAgICBMIC0tPnxhbXFwfCBSWy9SYWJiaXRNUS9dXG4gIGVuZFxuICBzdWJncmFwaCBmcm9udGVuZFxuICAgIHN1YmdyYXBoIEFQSVxuICAgICAgUiAtLS18YW1xcHwgQVtBUEldXG4gICAgZW5kXG4gICAgQSAtLS18d3N8QzFbQ2xpZW50MV1cbiAgICBBIC0tLXx3c3xDMltDbGllbnQyXVxuICAgIEEgLS0tfHdzfEMzW0NsaWVudDNdXG4gIGVuZFxuIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRhcmsifSwidXBkYXRlRWRpdG9yIjpmYWxzZX0)](https://mermaid-js.github.io/mermaid-live-editor/#/edit/eyJjb2RlIjoiZ3JhcGggTFJcbiAgc3ViZ3JhcGggYmFja2VuZFxuICAgIEMoW0NvbnRhaW5lcl0pIC0tPnxsb2cgdG8gc3Rkb3V0L3N0ZGVycnwgQltkb2NrZXIganNvbiBsb2cgZHJpdmVyXVxuICAgIEIgLS0-fG1vdW50ZWQgbG9nIGRpcmVjdG9yaWVzfCBGW0ZpbGViZWF0XSAtLT58ZmlsZWJlYXQgaW5wdXR8IExbL0xvZ3N0YXNoL11cbiAgICBMIC0tPnxhbXFwfCBSWy9SYWJiaXRNUS9dXG4gIGVuZFxuICBzdWJncmFwaCBmcm9udGVuZFxuICAgIHN1YmdyYXBoIEFQSVxuICAgICAgUiAtLS18YW1xcHwgQVtBUEldXG4gICAgZW5kXG4gICAgQSAtLS18d3N8QzFbQ2xpZW50MV1cbiAgICBBIC0tLXx3c3xDMltDbGllbnQyXVxuICAgIEEgLS0tfHdzfEMzW0NsaWVudDNdXG4gIGVuZFxuIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRhcmsifSwidXBkYXRlRWRpdG9yIjpmYWxzZX0)
 
+## Example projects
+
+A [Vagrantfile](./Vagrantfile) is provided to experiment with `trail`. It will create 5 VMs with multiple docker-based example projects (`wordpress`, `rails`, `django`, a failing `nginx` configuration and a `flog` container).
+
+### Configuration
+
+Install the required `ansible` role (docker installation and configuration) by running the following:
+```bash
+ansible-galaxy install -r requirements.yml
+```
+
+The `LOGSTASH_TARGET` variable in [the provisioning playbook](./provisioning.playbook.yml) is supposed to be modified to suit your needs.
+
+### Running the example projects
+
+In order to use the provisioning part of the [Vagrantfile](./Vagrantfile), simply bring the VMs up and Vagrant will automatically run the corresponding playbook based on the node name.
+
+```bash
+vagrant up
+```
+
 ## Backend
 
 ### Stack
