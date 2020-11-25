@@ -1,4 +1,6 @@
-# 168h
+# Trail
+
+_School project built during the 168h "codecamp"._
 
 ## Goal
 
