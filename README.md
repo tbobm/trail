@@ -22,7 +22,7 @@ docker-compose up -d
 
 The ansible role `trail` will deploy a docker-enabled filebeat container with the required permissions (read capability on the docker socket and container directories).
 
-An [exemple playbook](./playbook.yml) demonstrates a basic usage of this role. The `LOGSTASH_TARGET` is required, as it is used in the [filebeat config file](./roles/trail/templates/filebeat.yml.j2).
+An [example playbook](./playbook.yml) demonstrates a basic usage of this role. The `LOGSTASH_TARGET` is required, as it is used in the [filebeat config file](./roles/trail/templates/filebeat.yml.j2).
 
 The `trail` role will:
   1. Template the filebeat configuration in `/etc/filebeat.yml`
